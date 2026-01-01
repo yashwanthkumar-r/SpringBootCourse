@@ -1,45 +1,39 @@
 package com.codingshuttle.yash.modules.module2.controllers;
 
+import com.codingshuttle.yash.modules.module2.configs.MapperConfig;
 import com.codingshuttle.yash.modules.module2.dto.EmployeeDTO;
-import com.codingshuttle.yash.modules.module2.entities.EmployeeEntity;
-import com.codingshuttle.yash.modules.module2.repositories.EmployeeRepository;
+import com.codingshuttle.yash.modules.module2.services.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")  //parent path
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository){
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService,MapperConfig mapperConfig) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/{employeeId}")
-    public EmployeeEntity getEmployeeById(@PathVariable(name= "employeeId") long id){
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeDTO getEmployeeById(@PathVariable(name = "employeeId") long id) {
+        return employeeService.getEmployeeById(id);
     }
 
     @GetMapping
-    public List<EmployeeEntity> getAllEmployees(@RequestParam("age") Integer age, @RequestParam String sortBy){
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployees(@RequestParam("age") Integer age, @RequestParam String sortBy) {
+        return employeeService.getAllEmployees();
     }
 
     @PostMapping
-    public EmployeeEntity CreateNewEmployee(@RequestBody EmployeeEntity employeeInput){
-        return employeeRepository.save(employeeInput);
+    public EmployeeDTO CreateNewEmployee(@RequestBody EmployeeDTO employeeInput) {
+        return employeeService.CreateNewEmployee(employeeInput);
     }
 
     @PutMapping
-    public String UpdateEmpByID(){
+    public String UpdateEmpByID() {
         return "emplyoee details updated";
     }
 }
-
-/*    @GetMapping(path = "/getSecretMessage")
-    public String getSecretMsg(){
-        return "hello dude, you can do it!!";
-    }*/
