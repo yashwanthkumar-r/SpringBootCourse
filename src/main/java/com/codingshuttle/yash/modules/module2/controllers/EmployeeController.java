@@ -3,6 +3,7 @@ package com.codingshuttle.yash.modules.module2.controllers;
 import com.codingshuttle.yash.modules.module2.configs.MapperConfig;
 import com.codingshuttle.yash.modules.module2.dto.EmployeeDTO;
 import com.codingshuttle.yash.modules.module2.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +34,12 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> CreateNewEmployee(@RequestBody EmployeeDTO employeeInput) {
+    public ResponseEntity<EmployeeDTO> CreateNewEmployee(@RequestBody @Valid EmployeeDTO employeeInput) {
         return new ResponseEntity<>(employeeService.CreateNewEmployee(employeeInput), HttpStatus.CREATED); //new ResponseEntity<>(body, status)
     }
 
     @PutMapping(path = "/{employeeID}")
-    public ResponseEntity<EmployeeDTO> UpdateEmpByID(@RequestBody EmployeeDTO employeeDTO, @PathVariable Long employeeID) {
+    public ResponseEntity<EmployeeDTO> UpdateEmpByID(@RequestBody @Valid EmployeeDTO employeeDTO, @PathVariable Long employeeID) {
         EmployeeDTO employeeDTO1 = employeeService.updateEmployeeByID(employeeID, employeeDTO);
         if (employeeDTO1 != null)
             return ResponseEntity.ok(employeeDTO1);
