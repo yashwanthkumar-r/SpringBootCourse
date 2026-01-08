@@ -1,5 +1,6 @@
 package com.codingshuttle.yash.modules.module2.services;
 
+import com.codingshuttle.yash.modules.module2.Exceptions.ResourceNotFoundException;
 import com.codingshuttle.yash.modules.module2.dto.EmployeeDTO;
 import com.codingshuttle.yash.modules.module2.entities.EmployeeEntity;
 import com.codingshuttle.yash.modules.module2.repositories.EmployeeRepository;
@@ -10,7 +11,6 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +26,11 @@ public class EmployeeService {
 
     }
 
-    public Optional<EmployeeDTO> getEmployeeById(long id) {
-        return employeeRepository.findById(id)
-                .map(employeeEntity -> modelMapper.map(employeeEntity, EmployeeDTO.class));
+    public EmployeeDTO getEmployeeById(long id) {
+        EmployeeEntity employeeEntity = employeeRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found: " + id));
+        return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
 
     public List<EmployeeDTO> getAllEmployees() {
@@ -48,10 +50,10 @@ public class EmployeeService {
 
     //This method will update the values of employee if employeeID already exists else throw not found
     public EmployeeDTO updateEmployeeByID(Long id, EmployeeDTO employeeDTO) {
-        boolean exist = employeeRepository.existsById(id);
-        if (!exist) return null;
 
-        EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
+        EmployeeEntity employeeEntity = employeeRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found: " + id));
         modelMapper.map(employeeDTO, employeeEntity);
         employeeEntity.setId(id);
         EmployeeEntity employeeEntitySaved = employeeRepository.save(employeeEntity);
@@ -60,16 +62,16 @@ public class EmployeeService {
 
     public Boolean deleteEmpByID(Long id) {
         if (!employeeRepository.existsById(id)) {
-            return false;
+            throw new ResourceNotFoundException("Employee Not Found: " + id);
         }
         employeeRepository.deleteById(id);
         return true;
     }
 
     public EmployeeDTO partialEmpUpdate(Map<String, Object> update, Long employeeID) {
-        boolean exist = employeeRepository.existsById(employeeID);
-        if (!exist) return null;
-        EmployeeEntity employeeEntity = employeeRepository.findById(employeeID).get();
+        EmployeeEntity employeeEntity = employeeRepository
+                .findById(employeeID)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found: " + employeeID));
 
 
         update.forEach((field, value) -> {

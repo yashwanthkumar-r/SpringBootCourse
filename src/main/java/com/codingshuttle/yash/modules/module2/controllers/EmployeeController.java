@@ -23,9 +23,7 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name = "employeeId") long id) {
-        return employeeService.getEmployeeById(id)
-                .map(employeeDTO -> ResponseEntity.ok(employeeDTO))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
     @GetMapping
@@ -40,25 +38,16 @@ public class EmployeeController {
 
     @PutMapping(path = "/{employeeID}")
     public ResponseEntity<EmployeeDTO> UpdateEmpByID(@RequestBody @Valid EmployeeDTO employeeDTO, @PathVariable Long employeeID) {
-        EmployeeDTO employeeDTO1 = employeeService.updateEmployeeByID(employeeID, employeeDTO);
-        if (employeeDTO1 != null)
-            return ResponseEntity.ok(employeeDTO1);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employeeService.updateEmployeeByID(employeeID, employeeDTO));
     }
 
     @PatchMapping(path = "/{employeeID}")
     public ResponseEntity<EmployeeDTO> partialEmpUpdate(@RequestBody Map<String, Object> update, @PathVariable Long employeeID) {
-        EmployeeDTO employeeDTO = employeeService.partialEmpUpdate(update, employeeID);
-        if (employeeDTO != null)
-            return ResponseEntity.ok(employeeDTO);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employeeService.partialEmpUpdate(update, employeeID));
     }
 
     @DeleteMapping(path = "/{employeeID}")
     public ResponseEntity<Boolean> deleteEmpByID(@PathVariable Long employeeID) {
-        boolean isDeleted = employeeService.deleteEmpByID(employeeID);
-        if (isDeleted)
-            return ResponseEntity.ok(true);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employeeService.deleteEmpByID(employeeID));
     }
 }
