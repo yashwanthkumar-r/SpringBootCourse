@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 class JpaTutorialApplicationTests {
@@ -73,7 +70,6 @@ class JpaTutorialApplicationTests {
         List<ProductEntity> productEntityList1 = productRepository.findBySkuContainingOrderByPrice("pep");
         for (ProductEntity p : productEntityList1)
             System.out.println(p);
-
 
 
     }

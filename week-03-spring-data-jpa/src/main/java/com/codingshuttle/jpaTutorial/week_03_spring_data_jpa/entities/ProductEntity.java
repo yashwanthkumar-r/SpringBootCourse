@@ -1,7 +1,10 @@
 package com.codingshuttle.jpaTutorial.week_03_spring_data_jpa.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,11 +19,11 @@ import java.time.LocalDateTime;
 @Table(
         name = "product_table",
         uniqueConstraints = {
-                @UniqueConstraint(name = "sku_unique",columnNames = {"sku"}),
-                @UniqueConstraint(name = "title_price_unique",columnNames = {"title_x","price"})
+                @UniqueConstraint(name = "sku_unique", columnNames = {"sku"}),
+                @UniqueConstraint(name = "title_price_unique", columnNames = {"title_x", "price"})
         },
         indexes = {
-                @Index(name = "sku_index",columnList = "sku")
+                @Index(name = "sku_index", columnList = "sku")
         }
 )
 public class ProductEntity {

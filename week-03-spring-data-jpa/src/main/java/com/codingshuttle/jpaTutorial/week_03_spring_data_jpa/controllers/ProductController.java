@@ -2,11 +2,8 @@ package com.codingshuttle.jpaTutorial.week_03_spring_data_jpa.controllers;
 
 import com.codingshuttle.jpaTutorial.week_03_spring_data_jpa.entities.ProductEntity;
 import com.codingshuttle.jpaTutorial.week_03_spring_data_jpa.repositories.ProductRepository;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +17,16 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    private final int PAGE_SIZE=5;
+    private final int PAGE_SIZE = 5;
 
     @GetMapping("/product/sku/{sku}")
-    public List<ProductEntity> getSkuContainingOrderByPrice(@PathVariable String sku){
+    public List<ProductEntity> getSkuContainingOrderByPrice(@PathVariable String sku) {
         return productRepository.findBySkuContainingOrderByPrice(sku);
 
     }
 
     @GetMapping("/product/title/{title}")
-    public ProductEntity getTitleOrderByPrice(@PathVariable String title){
+    public ProductEntity getTitleOrderByPrice(@PathVariable String title) {
         return productRepository.findByTitleOrderByPrice(title);
 
     }
@@ -39,7 +36,7 @@ public class ProductController {
     public List<ProductEntity> getAll(
             @RequestParam(defaultValue = "") String title,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "0") int pageNo){
+            @RequestParam(defaultValue = "0") int pageNo) {
 
      /*  // return productRepository.findBy(Sort.by(Sort.Direction.DESC ,sortBy));
         return productRepository.findBy(Sort.by(
@@ -59,7 +56,7 @@ public class ProductController {
 
         return productRepository.findByTitleContainingIgnoreCase(
                 title,
-                PageRequest.of(pageNo,PAGE_SIZE,Sort.by(sortBy))
+                PageRequest.of(pageNo, PAGE_SIZE, Sort.by(sortBy))
         );
 
     }

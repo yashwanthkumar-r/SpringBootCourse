@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     //get product which matches the given title
     ProductEntity findByTitleOrderByPrice(String title);

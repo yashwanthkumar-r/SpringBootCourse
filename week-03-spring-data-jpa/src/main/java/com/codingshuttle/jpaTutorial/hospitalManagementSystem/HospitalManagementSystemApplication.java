@@ -1,13 +1,13 @@
-package com.codingshuttle.jpaTutorial.week_03_spring_data_jpa;
+package com.codingshuttle.jpaTutorial.hospitalManagementSystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JpaTutorialApplication {
+public class HospitalManagementSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JpaTutorialApplication.class, args);
+        SpringApplication.run(HospitalManagementSystemApplication.class, args);
     }
 
 }
