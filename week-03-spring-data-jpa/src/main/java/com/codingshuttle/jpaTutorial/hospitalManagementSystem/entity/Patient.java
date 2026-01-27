@@ -36,11 +36,11 @@ public class Patient {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "insurance_id", unique = true)
     private Insurance insurance; //owning side
 
-    @OneToMany(mappedBy = "patient") //inverse side
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL) //inverse side
     private Set<Appointment> appointments = new HashSet<>();
 
 }
