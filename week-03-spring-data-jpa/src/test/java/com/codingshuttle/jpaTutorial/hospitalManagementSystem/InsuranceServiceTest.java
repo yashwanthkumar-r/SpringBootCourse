@@ -35,7 +35,9 @@ public class InsuranceServiceTest {
 
         System.out.println(insuranceService.assignInsuranceToPatient(insurance,1L));
 
-        patientService.deletePatient(1L);
+        // patientService.deletePatient(1L);
+
+        System.out.println(insuranceService.removeInsuranceToPatient(1L));
     }
 
 
@@ -48,9 +50,9 @@ public class InsuranceServiceTest {
                 .build();
 
 
-        System.out.println(appointmentService.createNewAppointment(appointment,1L,2L));
+        System.out.println(appointmentService.createNewAppointment(appointment,3L,2L));
 
-        patientService.deletePatient(1L);
+        patientService.deletePatient(3L);
     }
 
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"patient","doctor"})
+@ToString(exclude = {"doctor","patient"})
 @Entity
 public class Appointment {
 
@@ -30,7 +30,7 @@ public class Appointment {
     @JoinColumn(nullable = false)
     private Patient patient; //owning side
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Doctor doctor; //owning side
 }

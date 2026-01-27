@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@ToString
+@ToString(exclude = {"insurance", "appointments"})
 @Getter
 @Setter
 public class Patient {
@@ -36,11 +36,11 @@ public class Patient {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "insurance_id", unique = true)
     private Insurance insurance; //owning side
 
-    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL) //inverse side
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL, fetch = FetchType.EAGER) //inverse side
     private Set<Appointment> appointments = new HashSet<>();
 
 }
