@@ -1,6 +1,6 @@
 <!--This configuration writes logs to application.log, rolls them daily or when the file reaches 10MB, and keeps log history for 30 days.-->
 <configuration>
-    <property name="LOG_PATH" value="logs" />
+    <property name="LOG_PATH" value="logs"/>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/application.log</file>
@@ -17,6 +17,6 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="ROLLING" />
+        <appender-ref ref="ROLLING"/>
     </root>
 </configuration>

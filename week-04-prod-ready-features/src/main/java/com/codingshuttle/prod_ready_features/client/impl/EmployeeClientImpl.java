@@ -4,7 +4,6 @@ import com.codingshuttle.prod_ready_features.Exception.ResourceNotFoundException
 import com.codingshuttle.prod_ready_features.advice.ApiResponse;
 import com.codingshuttle.prod_ready_features.client.EmployeeClient;
 import com.codingshuttle.prod_ready_features.dto.EmployeeDTO;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -21,7 +20,7 @@ public class EmployeeClientImpl implements EmployeeClient {
 
     Logger log = LoggerFactory.getLogger(EmployeeClientImpl.class);
 
-    public EmployeeClientImpl(RestClient restClient){
+    public EmployeeClientImpl(RestClient restClient) {
         this.restClient = restClient;
     }
 
@@ -31,13 +30,13 @@ public class EmployeeClientImpl implements EmployeeClient {
             ApiResponse<List<EmployeeDTO>> response = restClient.get()
                     .uri("employees")
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,(req,res)->{
-                        log.error("Couldn't get all employees data from client: {}" , new String(res.getBody().readAllBytes()));
+                    .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
+                        log.error("Couldn't get all employees data from client: {}", new String(res.getBody().readAllBytes()));
                         throw new ResourceNotFoundException("couldn't find employees");
                     })
                     .body(new ParameterizedTypeReference<ApiResponse<List<EmployeeDTO>>>() {
                     });
-            log.trace("response successfully retrieved at getAllEmployees: {}",response.toString());
+            log.trace("response successfully retrieved at getAllEmployees: {}", response.toString());
             return response;
         } catch (Exception e) {
             log.error("Exception occurred at getAllEmployees: ", e);
@@ -45,40 +44,40 @@ public class EmployeeClientImpl implements EmployeeClient {
         }
     }
 
-    public ApiResponse<EmployeeDTO> getEmpByID(Long id){
-        log.info("Entered into getEmpByID, trying retrieve response for ID: {}",id);
-        try{
+    public ApiResponse<EmployeeDTO> getEmpByID(Long id) {
+        log.info("Entered into getEmpByID, trying retrieve response for ID: {}", id);
+        try {
             return restClient.get()
-                    .uri("employees/{empId}",id)
+                    .uri("employees/{empId}", id)
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,(req,res)->{
-                        log.error("Couldn't get emp data from client: {}" , new String(res.getBody().readAllBytes()));
+                    .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
+                        log.error("Couldn't get emp data from client: {}", new String(res.getBody().readAllBytes()));
                         throw new ResourceNotFoundException("couldn't find employee");
                     })
-                    .body(new ParameterizedTypeReference<ApiResponse<EmployeeDTO>>(){
-            });
-        }catch (Exception e){
+                    .body(new ParameterizedTypeReference<ApiResponse<EmployeeDTO>>() {
+                    });
+        } catch (Exception e) {
             log.error("Exception occurred at getEmpById: ", e);
             throw new RuntimeException(e);
         }
     }
 
 
-    public ApiResponse<EmployeeDTO> createEmployee(EmployeeDTO input){
-        log.info("Entered into createEmployee: {}",input);
-        try{
+    public ApiResponse<EmployeeDTO> createEmployee(EmployeeDTO input) {
+        log.info("Entered into createEmployee: {}", input);
+        try {
             return restClient.post()
                     .uri("employees")
                     .body(input)
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError,(req,res)->{
-                        log.error("Couldn't create emp data into client: {}" , new String(res.getBody().readAllBytes()));
+                    .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
+                        log.error("Couldn't create emp data into client: {}", new String(res.getBody().readAllBytes()));
                         throw new ResourceNotFoundException("couldn't create employee");
                     })
-                    .body(new ParameterizedTypeReference<ApiResponse<EmployeeDTO>>(){
+                    .body(new ParameterizedTypeReference<ApiResponse<EmployeeDTO>>() {
 
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Exception occurred at createEmployee: ", e);
             throw new RuntimeException(e);
         }

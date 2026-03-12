@@ -11,38 +11,39 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostServices {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
-    public List<PostDto> getAllPosts(){
+    public List<PostDto> getAllPosts() {
         return postRepository.findAll().stream()
-                .map(postEntity -> modelMapper.map(postEntity,PostDto.class))
+                .map(postEntity -> modelMapper.map(postEntity, PostDto.class))
                 .collect(Collectors.toList());
     }
 
-    public PostDto createPostEntity(PostDto inputData){
-        PostEntity input = modelMapper.map(inputData,PostEntity.class);
-        return modelMapper.map(postRepository.save(input),PostDto.class);
+    public PostDto createPostEntity(PostDto inputData) {
+        PostEntity input = modelMapper.map(inputData, PostEntity.class);
+        return modelMapper.map(postRepository.save(input), PostDto.class);
     }
 
     @Override
     public PostDto getPostById(Long id) {
         PostEntity data = postRepository.findById(id).orElseThrow(
-                ()-> new ResourceNotFoundException("Resource not found with Id: "+ id));
-        return modelMapper.map(data,PostDto.class);
+                () -> new ResourceNotFoundException("Resource not found with Id: " + id));
+        return modelMapper.map(data, PostDto.class);
     }
 
     @Override
     public PostDto updatePostEntity(PostDto input, Long id) {
-            PostEntity data = postRepository.findById(id).orElseThrow(
-                    ()-> new ResourceNotFoundException("Resource not found with Id: "+ id));
-            data.setId(id);
-            data.setTitle(input.getTitle());
-            data.setDescription(input.getDescription());
+        PostEntity data = postRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Resource not found with Id: " + id));
+        data.setId(id);
+        data.setTitle(input.getTitle());
+        data.setDescription(input.getDescription());
 
-            return modelMapper.map(postRepository.save(data),PostDto.class);
+        return modelMapper.map(postRepository.save(data), PostDto.class);
     }
 }

@@ -1,6 +1,5 @@
 package com.codingshuttle.prod_ready_features.config;
 
-import jdk.jfr.ContentType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +17,10 @@ public class RestClientConfig {
 
     @Bean
     @Qualifier("empServiceRestClient")
-    RestClient getEmpServiceRestClient(){
+    RestClient getEmpServiceRestClient() {
         return RestClient.builder()
                 .baseUrl(BASE_URL)
-                .defaultHeader(CONTENT_TYPE,APPLICATION_JSON_VALUE)
+                .defaultHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .build();
     }
 }
