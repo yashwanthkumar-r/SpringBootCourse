@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserDetailsService {
                 .orElseThrow(()->new ResourceNotFoundException("The user with " +username+" not found"));
     }
 
+    public Users getUserByID(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("The user with " +id+" not found"));
+    }
+
     public UserDto signUpUser(SignUpDto signUpDto) {
 
         Optional<Users> user = userRepository.findByEmail(signUpDto.getEmail());
