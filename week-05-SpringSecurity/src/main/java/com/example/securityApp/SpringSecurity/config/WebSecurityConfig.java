@@ -1,6 +1,7 @@
 package com.example.securityApp.SpringSecurity.config;
 
 import com.example.securityApp.SpringSecurity.filters.JwtTokenFilter;
+import com.example.securityApp.SpringSecurity.handler.Oauth2SuccessHandler;
 import com.example.securityApp.SpringSecurity.services.JWTServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,18 +29,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
+    private final Oauth2SuccessHandler oauth2SuccessHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/posts","/error","/auth/**").permitAll()
+                        .requestMatchers("/posts","/error","/auth/**","/home.html").permitAll()
 //                        .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(csrfConfig->csrfConfig.disable())
                 .sessionManagement(sessionConfig->sessionConfig
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2Config-> oauth2Config
+                        .failureUrl("/login?error=true")
+                        .successHandler(oauth2SuccessHandler));
 
  //               .formLogin(Customizer.withDefaults());
 
