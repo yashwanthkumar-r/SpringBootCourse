@@ -16,7 +16,7 @@ class Week04SpringSecurityApplicationTests {
 	void contextLoads() {
 		Users user = new Users(4L,"Yash@gmail.com","yash@123","yash");
 
-		String token = jwtServices.generateToken(user);
+		String token = jwtServices.generateAccessToken(user);
 
 		System.out.println("Jwt Token: " + token);
 
