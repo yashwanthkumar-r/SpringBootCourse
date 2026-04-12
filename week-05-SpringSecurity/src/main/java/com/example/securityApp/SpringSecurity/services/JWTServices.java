@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class JWTServices {
@@ -24,10 +25,14 @@ public class JWTServices {
     }
 
     public String generateAccessToken(Users user){
+        System.out.println("User = " + user.getEmail());
+        System.out.println("Roles = " + user.getRoles().toString());
+        System.out.println("Authorities = " + user.getAuthorities());
+        //System.out.println("Request URI = " + request.getRequestURI());
         return Jwts.builder()
                 .subject(user.getId().toString())
                 .claim("email",user.getEmail())
-                .claim("role", Set.of("USER","ADMIN"))
+                .claim("roles", user.getRoles().toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000*60*10))
                 .signWith(getSecretKey())

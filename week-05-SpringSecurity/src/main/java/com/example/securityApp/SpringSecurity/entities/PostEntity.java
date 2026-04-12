@@ -13,8 +13,7 @@ import org.hibernate.envers.Audited;
 @Setter
 @Entity
 @Table(name = "Posts")
-@Audited
-public class PostEntity extends AuditableEntity {
+public class PostEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

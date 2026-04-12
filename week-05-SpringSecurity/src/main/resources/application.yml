@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 917900788002
-            client-secret: ziqwKrn
+            client-id: 91790
+            client-secret: GOCS
           github:
             client-id: 917900788002-s58
             client-secret: GOCSPX-3Na-T

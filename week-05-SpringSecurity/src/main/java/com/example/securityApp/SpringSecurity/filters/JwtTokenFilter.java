@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,6 +27,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final UserServiceImpl userService;
 
     @Autowired
+    @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
@@ -44,9 +46,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 Users user = userService.getUserByID(userId);
 
+                System.out.println("Authorities in Filter: " + user.getAuthorities());
+
                 // Create an authentication token with the userId as the principal
                 UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(user, null, null);
+                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
                 // Attach request details like remote IP address and session ID to the token
                 authenticationToken.setDetails(
