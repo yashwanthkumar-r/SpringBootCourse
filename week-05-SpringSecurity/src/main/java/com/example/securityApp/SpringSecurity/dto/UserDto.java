@@ -1,5 +1,6 @@
 package com.example.securityApp.SpringSecurity.dto;
 
+import com.example.securityApp.SpringSecurity.entities.enums.Permission;
 import com.example.securityApp.SpringSecurity.entities.enums.Role;
 import lombok.Data;
 
@@ -11,4 +12,5 @@ public class UserDto {
    private String name;
    private String email;
    private Set<Role> roles;
+   private Set<Permission> permissions;
 }
