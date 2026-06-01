@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import static com.example.securityApp.SpringSecurity.entities.enums.Role.CREATOR
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
@@ -36,24 +38,7 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth-> auth
                         .requestMatchers(publicRoutes).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
-
-                        //Granular level control over permission to user
-                        .requestMatchers(HttpMethod.POST, "/posts/**")
-                        .hasAnyRole(ADMIN.name(), CREATOR.name())
-
-                        .requestMatchers(HttpMethod.POST, "/posts/**")
-                        .hasAnyAuthority(POST_CREATE.name())
-
-                        .requestMatchers(HttpMethod.GET, "/posts/**")
-                        .hasAnyAuthority(POST_VIEW.name())
-
-                        .requestMatchers(HttpMethod.PUT, "/posts/**")
-                        .hasAnyAuthority(POST_UPDATE.name())
-
-                        .requestMatchers(HttpMethod.DELETE, "/posts/**")
-                        .hasAnyAuthority(POST_DELETE.name())
-
+                        .requestMatchers("/posts/**").authenticated()
                         .anyRequest().authenticated())
                 .csrf(csrfConfig->csrfConfig.disable())
                 .sessionManagement(sessionConfig->sessionConfig

@@ -30,7 +30,9 @@ public class PostServiceImpl implements PostServices {
     }
 
     public PostDto createPostEntity(PostDto inputData) {
+        Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         PostEntity input = modelMapper.map(inputData, PostEntity.class);
+        input.setAuthor(user);
         return modelMapper.map(postRepository.save(input), PostDto.class);
     }
 
