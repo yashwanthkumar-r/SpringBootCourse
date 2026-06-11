@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 @Getter
@@ -43,6 +44,17 @@ public class EmployeeDTO {
 
     @AssertTrue(message = "Employee should be active")
     private Boolean isActive;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof EmployeeDTO that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(role, that.role) && Objects.equals(age, that.age) && Objects.equals(salary, that.salary) && Objects.equals(dateOfJoining, that.dateOfJoining) && Objects.equals(isActive, that.isActive);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, role, age, salary, dateOfJoining, isActive);
+    }
 }
 
 

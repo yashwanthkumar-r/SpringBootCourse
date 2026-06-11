@@ -4,6 +4,7 @@ import com.example.week_06_Testing.Exceptions.ResourceNotFoundException;
 import com.example.week_06_Testing.dto.EmployeeDTO;
 import com.example.week_06_Testing.entities.EmployeeEntity;
 import com.example.week_06_Testing.repositories.EmployeeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class EmployeeService {
 
@@ -27,9 +29,14 @@ public class EmployeeService {
     }
 
     public EmployeeDTO getEmployeeById(long id) {
+        log.info("fetch the employee with id: {}", id);
         EmployeeEntity employeeEntity = employeeRepository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found: " + id));
+                .orElseThrow(() -> {
+                    log.error("employee not found with id: {}", id);
+                     return new ResourceNotFoundException("Employee Not Found: " + id);
+                });
+        log.info("successfully fetched the employee with id: {}", id);
         return modelMapper.map(employeeEntity, EmployeeDTO.class);
     }
 
@@ -43,12 +50,15 @@ public class EmployeeService {
     }
 
     public EmployeeDTO CreateNewEmployee(EmployeeDTO employeeInput) {
+        log.info("Create a new employee with email: {}", employeeInput.getEmail());
         EmployeeEntity employee = employeeRepository.findByEmail(employeeInput.getEmail());
         if(employee!=null){
+            log.info("Employee with email already present: {}", employeeInput.getEmail());
             throw new RuntimeException("Employee with this email already exists: "+ employeeInput.getEmail());
         }
         EmployeeEntity employeeToSave = modelMapper.map(employeeInput, EmployeeEntity.class);
         EmployeeEntity employeeSaved = employeeRepository.save(employeeToSave);
+        log.info("New employee saved: {}", employeeSaved.getEmail());
         return modelMapper.map(employeeSaved, EmployeeDTO.class);
     }
 
@@ -58,6 +68,10 @@ public class EmployeeService {
         EmployeeEntity employeeEntity = employeeRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found: " + id));
+
+        if(!employeeEntity.getEmail().equals(employeeDTO.getEmail())){
+            throw new RuntimeException("Email cannot be updated/changed");
+        }
         modelMapper.map(employeeDTO, employeeEntity);
         employeeEntity.setId(id);
         EmployeeEntity employeeEntitySaved = employeeRepository.save(employeeEntity);
