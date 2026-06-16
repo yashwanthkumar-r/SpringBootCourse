@@ -38,7 +38,7 @@ class Week06TestingApplicationTests {
 
 	//	Assertions.assertEquals(8,result);
 
-		Assertions.assertThat(result).isEqualTo(7)
+		Assertions.assertThat(result).isEqualTo(8)
 				.isCloseTo(9, Offset.offset(1));
 	}
 

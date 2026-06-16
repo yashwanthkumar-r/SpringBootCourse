@@ -2,10 +2,7 @@ package com.example.week_06_Testing.dto;
 
 import com.example.week_06_Testing.annotations.EmployeeRoleValidation;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,6 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDTO {

@@ -70,6 +70,7 @@ public class EmployeeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found: " + id));
 
         if(!employeeEntity.getEmail().equals(employeeDTO.getEmail())){
+            log.error("Email cannot be updated/changed");
             throw new RuntimeException("Email cannot be updated/changed");
         }
         modelMapper.map(employeeDTO, employeeEntity);
@@ -80,9 +81,11 @@ public class EmployeeService {
 
     public Boolean deleteEmpByID(Long id) {
         if (!employeeRepository.existsById(id)) {
+            log.error("Employee Not Found: {}",id);
             throw new ResourceNotFoundException("Employee Not Found: " + id);
         }
         employeeRepository.deleteById(id);
+        log.info("Employee successfully deleted: {}",id);
         return true;
     }
 
