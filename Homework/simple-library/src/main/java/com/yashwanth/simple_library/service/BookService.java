@@ -22,12 +22,12 @@ public class BookService {
 
     private final ModelMapper modelMapper;
 
-    @Autowired
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository, ModelMapper modelMapper) {
+    public BookService(BookRepository bookRepository, ModelMapper modelMapper, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.modelMapper = modelMapper;
+        this.authorRepository = authorRepository;
     }
 
     public BookDto mapToDto(Book book) {

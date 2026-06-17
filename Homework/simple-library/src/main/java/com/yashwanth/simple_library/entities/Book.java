@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @ToString(exclude = {"authors"})
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class Book {
     @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
