@@ -8,7 +8,7 @@ phases:
     commands:
       - cd week-06-Testing
       - echo Building, Testing and packaging the application...
-      - mvn clean package -DskipTests
+      - mvn clean package
   post_build:
     commands:
       - echo build, Testing, and packaging completed.
