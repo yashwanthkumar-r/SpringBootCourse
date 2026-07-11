@@ -23,4 +23,7 @@ public class EmployeeEntity {
     private Double salary;
     private LocalDate dateOfJoining;
     private Boolean isActive;
+
+    @ManyToOne
+    private Department department;
 }
