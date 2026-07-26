@@ -22,12 +22,13 @@ public class AIServiceTest {
 //        aiService.springAIDocs();
 //    }
 
-/*
     @Test
     public void testGetJoke(){
         var joke = aiService.getJoke("Cats");
         System.out.println(joke);
     }
+/*
+
 
     @Test
     public void testGetEmbedding(){

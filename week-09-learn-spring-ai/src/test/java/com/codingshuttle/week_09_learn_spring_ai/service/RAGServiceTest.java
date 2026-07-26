@@ -10,14 +10,20 @@ public class RAGServiceTest {
     @Autowired
     private RAGService ragService;
 
-    @Test
-    public void testIngest(){
-        ragService.ingestPdfToVectorStore();
-    }
+//    @Test
+//    public void testIngest(){
+//        ragService.ingestPdfToVectorStore();
+//    }
+//
+//    @Test
+//    public void testAskAI(){
+//        var res = ragService.askAI("is there any dress code for employees to follow");
+//        System.out.println(res);
+//    }
 
     @Test
-    public void testAskAI(){
-        var res = ragService.askAI("is there any dress code for employees to follow");
+    public void testAskAIWithAdvisors(){
+        var res = ragService.askAIWithAdvisors("do you anything About TVK in tamil nadu", "anuj101");
         System.out.println(res);
     }
 }
