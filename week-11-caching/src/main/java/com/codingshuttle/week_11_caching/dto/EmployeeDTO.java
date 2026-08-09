@@ -4,6 +4,7 @@ import com.codingshuttle.week_11_caching.annotations.EmployeeRoleValidation;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeDTO {
+public class EmployeeDTO  implements Serializable {
 
     private Long id;
 

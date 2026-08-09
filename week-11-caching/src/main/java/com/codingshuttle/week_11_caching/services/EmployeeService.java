@@ -7,6 +7,8 @@ import com.codingshuttle.week_11_caching.entities.EmployeeEntity;
 import com.codingshuttle.week_11_caching.repositories.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -22,6 +24,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
+    private final String CACHE_NAME = "employees";
 
 
     public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
@@ -30,6 +33,7 @@ public class EmployeeService {
 
     }
 
+    @Cacheable(cacheNames = CACHE_NAME, key = "#id")
     public EmployeeDTO getEmployeeById(long id) {
         log.info("fetch the employee with id: {}", id);
         EmployeeEntity employeeEntity = employeeRepository
@@ -51,6 +55,7 @@ public class EmployeeService {
 
     }
 
+    @CachePut(cacheNames = CACHE_NAME, key = "#result.id")
     public EmployeeDTO CreateNewEmployee(EmployeeDTO employeeInput) {
         log.info("Create a new employee with email: {}", employeeInput.getEmail());
         EmployeeEntity employee = employeeRepository.findByEmail(employeeInput.getEmail());
@@ -65,6 +70,7 @@ public class EmployeeService {
     }
 
     //This method will update the values of employee if employeeID already exists else throw not found
+    @CachePut(cacheNames = CACHE_NAME, key = "#id")
     public EmployeeDTO updateEmployeeByID(Long id, EmployeeDTO employeeDTO) {
 
         EmployeeEntity employeeEntity = employeeRepository
@@ -81,6 +87,7 @@ public class EmployeeService {
         return modelMapper.map(employeeEntitySaved, EmployeeDTO.class);
     }
 
+    @CacheEvict(cacheNames = CACHE_NAME, key = "#id")
     public Boolean deleteEmpByID(Long id) {
         if (!employeeRepository.existsById(id)) {
             log.error("Employee Not Found: {}",id);
