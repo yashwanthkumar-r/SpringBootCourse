@@ -3,8 +3,11 @@ package com.codingshuttle.week_11_caching.controllers;
 
 import com.codingshuttle.week_11_caching.configs.MapperConfig;
 import com.codingshuttle.week_11_caching.dto.EmployeeDTO;
+import com.codingshuttle.week_11_caching.dto.SalaryAccountDto;
 import com.codingshuttle.week_11_caching.services.EmployeeService;
+import com.codingshuttle.week_11_caching.services.SalaryAccountService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +17,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/employees")  //parent path
+@RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-
-    public EmployeeController(EmployeeService employeeService, MapperConfig mapperConfig) {
-        this.employeeService = employeeService;
-    }
+    private final SalaryAccountService salaryAccountService;
 
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name = "employeeId") long id) {
@@ -50,5 +51,10 @@ public class EmployeeController {
     @DeleteMapping(path = "/{employeeID}")
     public ResponseEntity<Boolean> deleteEmpByID(@PathVariable Long employeeID) {
         return ResponseEntity.ok(employeeService.deleteEmpByID(employeeID));
+    }
+
+    @PutMapping(path = "/updateSalary/{accountId}")
+    public ResponseEntity<SalaryAccountDto> updateSalary(@PathVariable Long accountId){
+        return ResponseEntity.ok(salaryAccountService.updateSalary(accountId));
     }
 }

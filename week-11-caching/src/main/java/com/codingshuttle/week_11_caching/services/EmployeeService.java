@@ -5,6 +5,7 @@ import com.codingshuttle.week_11_caching.Exceptions.ResourceNotFoundException;
 import com.codingshuttle.week_11_caching.dto.EmployeeDTO;
 import com.codingshuttle.week_11_caching.entities.EmployeeEntity;
 import com.codingshuttle.week_11_caching.repositories.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,18 +21,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final SalaryAccountService salaryAccountService;
     private final ModelMapper modelMapper;
     private final String CACHE_NAME = "employees";
 
-
-    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
-        this.employeeRepository = employeeRepository;
-        this.modelMapper = modelMapper;
-
-    }
 
     @Cacheable(cacheNames = CACHE_NAME, key = "#id")
     public EmployeeDTO getEmployeeById(long id) {
@@ -65,6 +62,9 @@ public class EmployeeService {
         }
         EmployeeEntity employeeToSave = modelMapper.map(employeeInput, EmployeeEntity.class);
         EmployeeEntity employeeSaved = employeeRepository.save(employeeToSave);
+
+        salaryAccountService.createAccount(employeeSaved);
+
         log.info("New employee saved: {}", employeeSaved.getEmail());
         return modelMapper.map(employeeSaved, EmployeeDTO.class);
     }
