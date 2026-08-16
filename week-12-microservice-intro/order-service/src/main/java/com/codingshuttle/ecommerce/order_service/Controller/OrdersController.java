@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/core")
 @RequiredArgsConstructor
 @Slf4j
 public class OrdersController {
 
     private final OrderService orderService;
+
+    @GetMapping("/helloOrders")
+    public String helloOrders(){
+        return "Hello from Orders Service";
+    }
 
     @GetMapping
     public ResponseEntity<List<OrderRequestDto>> getAllOrders() {
