@@ -6,6 +6,9 @@ import com.codingshuttle.ecommerce.order_service.entity.OrderItem;
 import com.codingshuttle.ecommerce.order_service.entity.OrderStatus;
 import com.codingshuttle.ecommerce.order_service.entity.Orders;
 import com.codingshuttle.ecommerce.order_service.repository.OrdersRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -41,14 +44,16 @@ public class OrderService {
         return modelMapper.map(order, OrderRequestDto.class);
     }
 
+//    @Retry(name = "inventoryRetry", fallbackMethod = "createOrderFallback")
+    @CircuitBreaker(name = "inventoryCircuitBreaker", fallbackMethod = "createOrderFallback")
+//    @RateLimiter(name = "inventoryRateLimiter", fallbackMethod = "createOrderFallback")
     public OrderRequestDto createOrder(OrderRequestDto orderRequestDto) {
-
+        log.info("calling create order method");
         Double totalPrice = inventoryFeignClient.reduceStocks(orderRequestDto);
 
-        orderRequestDto.setTotalPrice(BigDecimal.valueOf(totalPrice));
+//        orderRequestDto.setTotalPrice(BigDecimal.valueOf(totalPrice));
 
         Orders orders = modelMapper.map(orderRequestDto, Orders.class);
-
         for(OrderItem orderItem: orders.getItems()){
             orderItem.setOrder(orders);
         }
@@ -57,6 +62,12 @@ public class OrderService {
         orders.setOrderStatus(OrderStatus.CONFIRMED);
 
         return modelMapper.map(ordersRepository.save(orders), OrderRequestDto.class);
+    }
 
+    //this method will run and return empty object, when the createOrder method fails
+    public OrderRequestDto createOrderFallback(OrderRequestDto orderRequestDto, Throwable throwable){
+        log.error("Fallback occured due to: {}", throwable.getMessage());
+
+        return new OrderRequestDto();
     }
 }
