@@ -2,14 +2,25 @@ package com.codingshuttle.week_18_multithreading;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.Executor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.time.Instant;
 import java.util.concurrent.*;
 
 @SpringBootApplication
 @Slf4j
-public class Week18MultithreadingApplication {
+@EnableScheduling
+@EnableAsync
+public class Week18MultithreadingApplication implements CommandLineRunner {
+
+	@Autowired
+	private TaskScheduler taskScheduler;
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		SpringApplication.run(Week18MultithreadingApplication.class, args);
@@ -17,8 +28,15 @@ public class Week18MultithreadingApplication {
 //		learnFuture();
 
 //		learnCompletableFuture();
-		learnCF2();
-		log.info("End of main method - {}", Thread.currentThread().getName());
+//		learnCF2();
+//		log.info("End of main method - {}", Thread.currentThread().getName());
+	}
+
+	@Override
+	public void run(String... args){
+//		taskScheduler.schedule(()->{
+//			log.info("Running after 2 seconds");
+//		}, Instant.ofEpochSecond(2));
 	}
 
 	public static void learnThread(){
