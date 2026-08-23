@@ -20,8 +20,8 @@ public class MyScheduler {
         log.info("Scheduled Logging ended...{}", Thread.currentThread().getName());
     }
 
-    @Scheduled(fixedRate = 200)
-    @Async("jobExecutor")
+//    @Scheduled(fixedRate = 200)
+//    @Async("jobExecutor")
     public void logMe2() throws InterruptedException {
         log.info("Scheduled Logging2 started...{}", Thread.currentThread().getName());
 

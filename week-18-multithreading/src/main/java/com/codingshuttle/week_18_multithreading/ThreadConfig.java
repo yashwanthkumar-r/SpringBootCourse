@@ -21,7 +21,7 @@ public class ThreadConfig {
     }
 
     @Bean(name = "jobExecutor")
-    public Executor jobExecutor(){
+    public ThreadPoolTaskExecutor jobExecutor(){
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(4);
         taskExecutor.setMaxPoolSize(10);
