@@ -4,6 +4,7 @@ import com.codingshuttle.ecommerce.order_service.dto.OrderRequestDto;
 import com.codingshuttle.ecommerce.order_service.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,12 @@ public class OrdersController {
 
     private final OrderService orderService;
 
+    @Value("${my.variable}")
+    private String myVariable;
+
     @GetMapping("/helloOrders")
     public String helloOrders(@RequestHeader("X-User-Id") Long userId){
-        return "Hello from Orders Service, User Id is: " + userId;
+        return "Hello from Orders Service, User Id is: " + userId + " and MyVariable: "+ myVariable;
     }
 
     @GetMapping
